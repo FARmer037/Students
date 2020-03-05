@@ -114,7 +114,7 @@ const Students = () => {
                 placeholder='GPA'
                 type='number'
                 name='GPA'
-                onChange={(e) => setGPA(e.target.value)}
+                onChange={(e) => setGPA(parseFloat(e.target.value))}
             /> <br />
             <button onClick={() => addStudent(id, name, surname, major, GPA)}>Add Student</button>
         </div>
