@@ -1,12 +1,12 @@
 import React from 'react'
-import Students from './componens/Students'
-import ShowStudent2 from './componens/ShowStudent2'
+import StudentsList from './componens/StudentsList'
+import InputForm from './componens/InputForm'
 
 const App = () => {
   return (
     <div>
-      {/* <Students /> */}
-      <ShowStudent2 />
+      <StudentsList />
+      <InputForm />
     </div>
   );
 }
