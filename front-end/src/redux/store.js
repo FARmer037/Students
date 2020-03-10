@@ -23,7 +23,6 @@ const formReducer = (data = initialForm, action) => {
 const studentReducer = (students = [], action) => {
     switch (action.type) {
         case 'GET_STUDENTS': return action.students;
-        // case 'GET_STUDENT': return action.student;
         case 'ADD_STUDENT': return [...students, action.student];
         case 'DELETE_STUDENT': return students.filter(student => student.id !== action.id);
         case 'UPDATE_STUDENT': return students.map(student => {
@@ -43,10 +42,20 @@ const showStudentReducer = (student = {}, action) => {
     }
 }
 
+const modalReducer = (visible = false, action) => {
+    switch(action.type) {
+        case 'SHOW_MODAL' : return true;
+        case 'OK' : return false;
+        case 'CANCLE' : return false;
+        default: return visible;
+    }
+}
+
 const reducers = combineReducers({
     student: studentReducer,
     form: formReducer,
-    show: showStudentReducer
+    show: showStudentReducer,
+    modal: modalReducer
 })
 
 export const store = createStore(reducers, applyMiddleware(logger));

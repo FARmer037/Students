@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import 'antd/dist/antd.css'
 import { Table } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import StudentModal from './StudentModal'
@@ -10,8 +9,7 @@ const StudentsList = () => {
     const form = useSelector(state => state.form)
     const students = useSelector(state => state.student);
     const student = useSelector(state => state.show);
-
-    const [visible, setVisible] = useState(false)
+    const visible = useSelector(state => state.modal);
 
     const columns = [
         {
@@ -60,10 +58,8 @@ const StudentsList = () => {
 
     const getStudent = async (id) => {
         const result = await axios.get(`http://localhost:8000/api/students/${id}`)
-        console.log(result.data)
-        showModal()
-
         dispatch({ type: 'GET_STUDENT', student: result.data })
+        dispatch({type: 'SHOW_MODAL'})
     }
 
     const deleteStudent = async (id) => {
@@ -80,19 +76,13 @@ const StudentsList = () => {
         })
     }
 
-    const showModal = () => {
-        setVisible(true)
-    }
+    // const handleOk = e => {
+    //     dispatch({type: 'OK'})
+    // }
 
-    const handleOk = e => {
-        console.log(e)
-        setVisible(false)
-    }
-
-    const handleCancel = e => {
-        console.log(e)
-        setVisible(false)
-    }
+    // const handleCancel = e => {
+    //     dispatch({type: 'CANCLE'})
+    // }
 
     useEffect(() => {
         getStudents()
@@ -101,7 +91,7 @@ const StudentsList = () => {
     return (
         <div>
             <Table columns={columns} dataSource={students} />
-            <StudentModal student={student} visible={visible} handleOk={handleOk} handleCancel={handleCancel} />
+            <StudentModal {...student} />
         </div>
     )
 }

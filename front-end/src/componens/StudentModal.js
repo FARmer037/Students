@@ -1,21 +1,52 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import 'antd/dist/antd.css'
-import {  Modal } from 'antd'
+import { Modal } from 'antd'
 
 const StudentModal = (props) => {
+    const dispatch = useDispatch();
+    const visible = useSelector(state => state.modal);
+
+    const handleOk = () => {
+        dispatch({ type: 'OK' })
+    }
+
+    const handleCancel = () => {
+        dispatch({ type: 'CANCLE' })
+    }
+
     return (
         <div>
             <Modal
                 title="Student Information"
-                visible={props.visible}
-                onOk={props.handleOk}
-                onCancel={props.handleCancel}
+                visible={visible}
+                onOk={handleOk}
+                onCancel={handleCancel}
             >
-                <p>Student ID : {props.student.id}</p>
-                <p>Name : {props.student.name}</p>
-                <p>Surname : {props.student.surname}</p>
-                <p>Major : {props.student.major}</p>
-                <p>GPA : {props.student.GPA}</p>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Student ID : </td>
+                            <td>{props.id}</td>
+                        </tr>
+                        <tr>
+                            <td>Name : </td>
+                            <td>{props.name}</td>
+                        </tr>
+                        <tr>
+                            <td>Surname : </td>
+                            <td>{props.surname}</td>
+                        </tr>
+                        <tr>
+                            <td>Major : </td>
+                            <td>{props.major}</td>
+                        </tr>
+                        <tr>
+                            <td>GPA : </td>
+                            <td>{props.GPA}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </Modal>
         </div>
     )
