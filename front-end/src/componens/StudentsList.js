@@ -5,13 +5,14 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux'
 import StudentModal from './StudentModal'
 import UpdateModa from './UpdateModal'
-import { allActions } from '../redux/store'
+import { allActions, studentAction } from '../redux/store'
 import { bindActionCreators } from 'redux'
 
 const { confirm } = Modal;
 
 const StudentsList = () => {
     const actions = bindActionCreators(allActions, useDispatch())
+    const stdActions = bindActionCreators(studentAction, useDispatch())
     const form = useSelector(state => state.form)
     const students = useSelector(state => state.student);
     const student = useSelector(state => state.show);
@@ -55,13 +56,6 @@ const StudentsList = () => {
         }
     ]
 
-    const getStudents = async () => {
-        const result = await axios.get(`http://localhost:8000/api/students`)
-        console.log(result.data)
-        actions.get_students(result.data)
-
-    }
-
     const getStudent = async (id) => {
         const result = await axios.get(`http://localhost:8000/api/students/${id}`)
         actions.get_student(result.data)
@@ -96,7 +90,7 @@ const StudentsList = () => {
     }
 
     useEffect(() => {
-        getStudents()
+        stdActions.getStudents()
     }, [])
 
     return (

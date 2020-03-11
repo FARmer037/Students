@@ -1,5 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import logger from 'redux-logger'
+import thunk from 'redux-thunk'
+import axios from 'axios'
 
 const initialForm = {
     id: '',
@@ -20,6 +22,26 @@ const formReducer = (data = initialForm, action) => {
     }
 }
 
+export const studentAction = {
+    getStudentsSuccess: students => ({
+        type: 'GET_STUDENTS_SUCCESS',
+        students
+    }),
+    getStudentsFailed: () => ({ type: 'GET_STUDENTS_FAILED' }),
+    getStudents: () => async (dispatch) => {
+        try {
+            console.log('get student new')
+            const response = await axios.get(`http://localhost:8000/api/students`)
+            const responseBody = await response.data
+            console.log('response:', responseBody)
+            dispatch({ type: 'GET_STUDENTS_SUCCESS', students: responseBody })
+        } catch (error) {
+            console.log(error)
+            dispatch({ type: 'GET_STUDENTS_FAILED', error: error})
+        }
+    }
+}
+
 const studentReducer = (students = [], action) => {
     switch (action.type) {
         case 'GET_STUDENTS': return action.students;
@@ -31,6 +53,8 @@ const studentReducer = (students = [], action) => {
             else
                 return student;
         })
+        case 'GET_STUDENTS_SUCCESS': return action.students
+        case 'GET_STUDENTS_FAILED': return action.error
         default: return students
     }
 }
@@ -87,4 +111,4 @@ const reducers = combineReducers({
     updateModal: updateModalReducer
 })
 
-export const store = createStore(reducers, applyMiddleware(logger));
+export const store = createStore(reducers, applyMiddleware(logger, thunk));
