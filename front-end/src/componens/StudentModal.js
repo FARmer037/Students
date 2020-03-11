@@ -5,7 +5,7 @@ import { Modal } from 'antd'
 
 const StudentModal = (props) => {
     const dispatch = useDispatch();
-    const visible = useSelector(state => state.modal);
+    const visibleShow = useSelector(state => state.showModal);
 
     const handleOk = () => {
         dispatch({ type: 'OK' })
@@ -19,7 +19,7 @@ const StudentModal = (props) => {
         <div>
             <Modal
                 title="Student Information"
-                visible={visible}
+                visible={visibleShow}
                 onOk={handleOk}
                 onCancel={handleCancel}
             >

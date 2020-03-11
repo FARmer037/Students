@@ -42,20 +42,49 @@ const showStudentReducer = (student = {}, action) => {
     }
 }
 
-const modalReducer = (visible = false, action) => {
-    switch(action.type) {
-        case 'SHOW_MODAL' : return true;
-        case 'OK' : return false;
-        case 'CANCLE' : return false;
+const showModalReducer = (visible = false, action) => {
+    switch (action.type) {
+        case 'SHOW_MODAL': return true;
+        case 'OK': return false;
+        case 'CANCLE': return false;
         default: return visible;
     }
+}
+
+const updateModalReducer = (visible = false, action) => {
+    switch (action.type) {
+        case 'UPDATE_MODAL': return true;
+        case 'OK': return false;
+        case 'CANCLE': return false;
+        default: return visible;
+    }
+}
+
+export const allActions = {
+    change_id: (id) => ({ type: 'CHANGE_ID', id }),
+    change_name: (name) => ({ type: 'CHANGE_NAME', name }),
+    change_surname: (surname) => ({ type: 'CHANGE_SURNAME', surname }),
+    change_major: (major) => ({ type: 'CHANGE_MAJOR', major }),
+    change_gpa: (GPA) => ({ type: 'CHANGE_GPA', GPA }),
+
+    get_students: (students) => ({ type: 'GET_STUDENTS', students }),
+    get_student: (student) => ({ type: 'GET_STUDENT', student }),
+    add_student: (student) => ({ type: 'ADD_STUDENT', student }),
+    delete_student: (id) => ({ type: 'DELETE_STUDENT', id }),
+    update_student: (id, student) => ({ type: 'UPDATE_STUDENT', id, student }),
+
+    show_modal: () => ({ type: 'SHOW_MODAL' }),
+    update_modal: () => ({ type: 'UPDATE_MODAL' }),
+    ok: () => ({ type: 'OK' }),
+    cancle: () => ({ type: 'CANCLE' })
 }
 
 const reducers = combineReducers({
     student: studentReducer,
     form: formReducer,
     show: showStudentReducer,
-    modal: modalReducer
+    showModal: showModalReducer,
+    updateModal: updateModalReducer
 })
 
 export const store = createStore(reducers, applyMiddleware(logger));

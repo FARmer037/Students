@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Table } from 'antd'
+import { Table, Modal, Button } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux'
 import StudentModal from './StudentModal'
+import UpdateModa from './UpdateModal'
+import { allActions } from '../redux/store'
+import { bindActionCreators } from 'redux'
+
+const { confirm } = Modal;
 
 const StudentsList = () => {
-    const dispatch = useDispatch();
+    const actions = bindActionCreators(allActions, useDispatch())
     const form = useSelector(state => state.form)
     const students = useSelector(state => state.student);
     const student = useSelector(state => state.show);
-    const visible = useSelector(state => state.modal);
 
     const columns = [
         {
@@ -43,8 +48,8 @@ const StudentsList = () => {
             key: 'action',
             render: (text, record) => (
                 <span>
-                    <a style={{ marginRight: 16 }} onClick={() => updateStudent(record.id)}>Update</a>
-                    <a onClick={() => deleteStudent(record.id)}>Delete</a>
+                    <a style={{ marginRight: 16 }} onClick={() => update(record.id)}>Update</a>
+                    <a onClick={() => showDeleteConfirm(record.id)}>Delete</a>
                 </span>
             )
         }
@@ -53,36 +58,42 @@ const StudentsList = () => {
     const getStudents = async () => {
         const result = await axios.get(`http://localhost:8000/api/students`)
         console.log(result.data)
-        dispatch({ type: 'GET_STUDENTS', students: result.data })
+        actions.get_students(result.data)
+
     }
 
     const getStudent = async (id) => {
         const result = await axios.get(`http://localhost:8000/api/students/${id}`)
-        dispatch({ type: 'GET_STUDENT', student: result.data })
-        dispatch({type: 'SHOW_MODAL'})
+        actions.get_student(result.data)
+        actions.show_modal()
     }
 
     const deleteStudent = async (id) => {
         await axios.delete(`http://localhost:8000/api/students/${id}`)
-        dispatch({ type: 'DELETE_STUDENT', id: id })
+        actions.delete_student(id)
     }
 
-    const updateStudent = async (id) => {
-        await axios.put(`http://localhost:8000/api/students/${id}`, form)
-        dispatch({
-            type: 'UPDATE_STUDENT',
-            id: id,
-            student: { ...form, id: id }
-        })
+    const update = async (id) => {
+        form.id = id
+        actions.update_modal()
     }
 
-    // const handleOk = e => {
-    //     dispatch({type: 'OK'})
-    // }
-
-    // const handleCancel = e => {
-    //     dispatch({type: 'CANCLE'})
-    // }
+    const showDeleteConfirm = (id) => {
+        confirm({
+            title: 'Are you sure delete this one?',
+            icon: <ExclamationCircleOutlined />,
+            content: '',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                deleteStudent(id)
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    }
 
     useEffect(() => {
         getStudents()
@@ -92,6 +103,7 @@ const StudentsList = () => {
         <div>
             <Table columns={columns} dataSource={students} />
             <StudentModal {...student} />
+            <UpdateModa />
         </div>
     )
 }
