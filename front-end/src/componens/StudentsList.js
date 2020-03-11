@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
-import { Table, Modal, Button } from 'antd'
+import { Table, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux'
 import StudentModal from './StudentModal'
 import UpdateModa from './UpdateModal'
 import { allActions, studentAction } from '../redux/store'
 import { bindActionCreators } from 'redux'
+import './StudentsList.css'
 
 const { confirm } = Modal;
 
@@ -94,7 +95,7 @@ const StudentsList = () => {
     }, [])
 
     return (
-        <div>
+        <div className='container'>
             <Table columns={columns} dataSource={students} />
             <StudentModal {...student} />
             <UpdateModa />

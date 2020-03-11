@@ -12,18 +12,32 @@ app.use('/api', bodyParser.urlencoded({ extended: false }), router);
 let students = [
     {
         id: '5935512001',
-        name: 'Erika',
-        surname: 'Ikuta',
+        name: 'Clay',
+        surname: 'Jensen',
         major: 'CoE',
         GPA: 3.85
     },
     {
         id: '5935512002',
-        name: 'Asuka',
-        surname: 'Saito',
-        major: 'SE',
+        name: 'Hannah',
+        surname: 'Baker',
+        major: 'FIS',
         GPA: 3.25
-    }
+    },
+    {
+        id: '5935512003',
+        name: 'Tony',
+        surname: 'Padilla',
+        major: 'DE',
+        GPA: 2.52
+    },
+    {
+        id: '5935512004',
+        name: 'Justin',
+        surname: 'Foley',
+        major: 'SE',
+        GPA: 1.28
+    },
 ]
 
 router.route('/students')

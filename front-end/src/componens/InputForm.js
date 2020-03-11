@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { allActions } from '../redux/store'
 import { bindActionCreators } from 'redux'
+import './InputForm.css'
 
 const InputForm = () => {
     const form = useSelector(state => state.form)
@@ -16,17 +17,17 @@ const InputForm = () => {
     }
 
     return (
-        <div>
+        <div className='form-container'>
             <h2>Add Student</h2>
-            <table>
-                <tbody>
-                    <tr>
+            <table className='tb'>
+                <tbody className='t-body'>
+                    <tr className='tr'>
                         <td>Student ID</td>
                         <td>
                             <input className='inpt' type="text" onChange={(e) => actions.change_id(e.target.value)} />
                         </td>
                     </tr>
-                    <tr>
+                    <tr className='tr'>
                         <td>Name</td>
                         <td>
                             <input className='inpt' type="text" onChange={(e) => actions.change_name(e.target.value)} />
